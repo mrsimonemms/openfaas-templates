@@ -1,7 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/mrsimonemms/openfaas-templates/template/golang-crud/pkg/config"
+)
 
 func main() {
-	fmt.Println("Hello world")
+	cfg, err := config.New()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%+v\n", cfg)
 }

@@ -1,0 +1,36 @@
+package config
+
+import "github.com/caarlos0/env/v6"
+
+type Config struct {
+	Pagination
+	Routes
+	Server
+}
+
+type Pagination struct {
+	Limit    int64 `env:"PAGINATION_LIMIT,required,notEmpty" envDefault:"25"`
+	MaxLimit int64 `env:"PAGINATION_MAX_LIMIT,required,notEmpty" envDefault:"100"`
+}
+
+type Routes struct {
+	Create  bool `env:"CREATE_ONE_ROUTE_ENABLED" envDefault:"true"`
+	Delete  bool `env:"DELETE_ONE_ROUTE_ENABLED" envDefault:"true"`
+	GetMany bool `env:"GET_MANY_ROUTE_ENABLED" envDefault:"true"`
+	GetOne  bool `env:"GET_ONE_ROUTE_ENABLED" envDefault:"true"`
+	Update  bool `env:"UPDATE_ONE_ROUTE_ENABLED" envDefault:"true"`
+}
+
+type Server struct {
+	RoutePrefix string `env:"ROUTE_PREFIX,required,notEmpty" envDefault:"/crud"`
+	Port        int    `env:"http_port,required,notEmpty" envDefault:"3000"` // Use http_port for compatibility with OpenFaaS watchdog
+}
+
+func New() (*Config, error) {
+	cfg := Config{}
+	if err := env.Parse(&cfg); err != nil {
+		return nil, err
+	}
+
+	return &cfg, nil
+}
