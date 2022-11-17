@@ -3,9 +3,15 @@ package config
 import "github.com/caarlos0/env/v6"
 
 type Config struct {
+	MongoDB
 	Pagination
 	Routes
 	Server
+}
+
+type MongoDB struct {
+	URL    string `env:"MONGODB_URL,required,notEmpty"`
+	DBName string `env:"MONGODB_DB_NAME,required,notEmpty" envDefault:"openfaas-golang-crud"`
 }
 
 type Pagination struct {

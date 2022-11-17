@@ -43,6 +43,7 @@ tasks:
     env:
       http_port: "3001"
       MONGODB_URL: mongodb://localhost:27017
+      MONGODB_DB_NAME: openfaas-golang-crud
     init: |
       cd ${GITPOD_REPO_ROOT}/template/golang-crud
       go install
