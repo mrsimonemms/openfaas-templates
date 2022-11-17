@@ -35,6 +35,19 @@ tasks:
       cd ${GITPOD_REPO_ROOT}/template/mongoose-crud
       npm run start:dev
 
+  - name: Golang CRUD
+    env:
+      http_port: "3001"
+    init: |
+      cd ${GITPOD_REPO_ROOT}/template/golang-crud
+      go install
+
+      go install github.com/cosmtrek/air@latest
+    command: |
+      cd ${GITPOD_REPO_ROOT}/template/golang-crud
+
+      air
+
 vscode:
   extensions:
     - donjayamanne.git-extension-pack
