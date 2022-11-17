@@ -9,6 +9,10 @@ ports:
     port: 3000
     onOpen: notify
 
+  - name: Golang CRUD
+    port: 3001
+    onOpen: notify
+
 tasks:
   - name: MongoDB
     command: mongod
@@ -38,6 +42,7 @@ tasks:
   - name: Golang CRUD
     env:
       http_port: "3001"
+      MONGODB_URL: mongodb://localhost:27017
     init: |
       cd ${GITPOD_REPO_ROOT}/template/golang-crud
       go install
@@ -53,4 +58,5 @@ vscode:
     - donjayamanne.git-extension-pack
     - EditorConfig.EditorConfig
     - ms-vscode.vscode-typescript-next
+    - golang.go
     - mongodb.mongodb-vscode
