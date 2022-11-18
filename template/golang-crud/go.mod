@@ -5,7 +5,9 @@ go 1.19
 require (
 	github.com/caarlos0/env/v6 v6.10.1
 	github.com/gin-gonic/gin v1.8.1
+	github.com/google/uuid v1.3.0
 	github.com/kamva/mgm/v3 v3.5.0
+	github.com/mrsimonemms/openfaas-templates/template/golang-crud/function v0.0.0-00010101000000-000000000000
 	go.mongodb.org/mongo-driver v1.8.3
 )
 
