@@ -61,3 +61,4 @@ vscode:
     - ms-vscode.vscode-typescript-next
     - golang.go
     - mongodb.mongodb-vscode
+    - rangav.vscode-thunder-client
