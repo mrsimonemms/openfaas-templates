@@ -4,6 +4,7 @@ import (
 	"math"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kamva/mgm/v3"
@@ -28,6 +29,31 @@ func (h handler) GetMany(c *gin.Context) {
 		// Limit request is too high - set to max
 		resultsPerPage = int(h.Config.MaxLimit)
 	}
+	sort := c.QueryMap("sort")
+	if len(sort) == 0 {
+		sort["created_at"] = "DESC"
+	}
+
+	var sortBy bson.D
+	for key, direction := range sort {
+		var dirValue int
+		switch strings.ToUpper(direction) {
+		case "ASC":
+			dirValue = 1
+		case "DESC":
+			dirValue = -1
+		default:
+			common.ErrorHandler(c, http.StatusBadRequest, gin.H{
+				"message": "Invalid direction: " + direction + ". Use ASC or DESC",
+			})
+			return
+		}
+
+		sortBy = append(sortBy, bson.E{
+			Key:   key,
+			Value: dirValue,
+		})
+	}
 
 	ctx := mgm.Ctx()
 	data := function.Schema{}
@@ -47,12 +73,7 @@ func (h handler) GetMany(c *gin.Context) {
 	totalPages := math.Ceil(float64(count) / float64(resultsPerPage))
 
 	opts := options.Find().
-		SetSort(bson.D{
-			{
-				Key:   "created_at",
-				Value: -1,
-			},
-		}).
+		SetSort(sortBy).
 		SetLimit(int64(resultsPerPage)).
 		SetSkip(int64(offset))
 
