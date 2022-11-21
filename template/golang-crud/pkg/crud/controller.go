@@ -3,6 +3,8 @@ package crud
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/mrsimonemms/openfaas-templates/template/golang-crud/pkg/config"
+
+	fn "github.com/mrsimonemms/openfaas-templates/template/golang-crud/function"
 )
 
 type handler struct {
@@ -15,6 +17,7 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 	}
 
 	routes := r.Group(cfg.RoutePrefix)
+	routes.Use(fn.Middleware...)
 	if cfg.GetMany {
 		routes.GET("/", h.GetMany)
 	}
