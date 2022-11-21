@@ -8,6 +8,8 @@ import (
 	"github.com/mrsimonemms/openfaas-templates/template/golang-crud/pkg/config"
 	"github.com/mrsimonemms/openfaas-templates/template/golang-crud/pkg/crud"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	fn "github.com/mrsimonemms/openfaas-templates/template/golang-crud/function"
 )
 
 func main() {
@@ -24,6 +26,9 @@ func main() {
 	r.Use(gin.Logger(), gin.Recovery())
 
 	crud.RegisterRoutes(r, cfg)
+
+	// Register additional routes
+	fn.AdditionalRoutes(r, cfg)
 
 	if err := r.Run(fmt.Sprintf(":%d", cfg.Port)); err != nil {
 		panic(err)
