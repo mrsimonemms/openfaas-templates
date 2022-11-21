@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/gin-contrib/requestid"
 	"github.com/gin-gonic/gin"
 	"github.com/kamva/mgm/v3"
 	"github.com/mrsimonemms/openfaas-templates/template/golang-crud/pkg/config"
@@ -23,7 +24,7 @@ func main() {
 	}
 
 	r := gin.New()
-	r.Use(gin.Logger(), gin.Recovery())
+	r.Use(requestid.New(), gin.Logger(), gin.Recovery())
 
 	crud.RegisterRoutes(r, cfg)
 
