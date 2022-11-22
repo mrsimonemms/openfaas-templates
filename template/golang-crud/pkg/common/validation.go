@@ -11,11 +11,12 @@ import (
 	en_translations "github.com/go-playground/validator/v10/translations/en"
 )
 
+// Returns errors in translation and raw error object
 func Validate(data interface{}, validations map[string]struct {
 	Message   string
 	Validator validator.Func
 },
-) validator.ValidationErrorsTranslations {
+) (validator.ValidationErrorsTranslations, error) {
 	eng := en.New()
 	uni := ut.New(eng, eng)
 	trans, _ := uni.GetTranslator("en")
@@ -63,8 +64,8 @@ func Validate(data interface{}, validations map[string]struct {
 			errs[err.Field()] = err.Translate(trans)
 		}
 
-		return errs
+		return errs, err
 	}
 
-	return nil
+	return nil, nil
 }

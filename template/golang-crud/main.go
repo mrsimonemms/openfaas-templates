@@ -6,8 +6,10 @@ import (
 	"github.com/gin-contrib/requestid"
 	"github.com/gin-gonic/gin"
 	"github.com/kamva/mgm/v3"
+	logger "github.com/mrsimonemms/gin-structured-logger"
 	"github.com/mrsimonemms/openfaas-templates/template/golang-crud/pkg/config"
 	"github.com/mrsimonemms/openfaas-templates/template/golang-crud/pkg/crud"
+	"github.com/rs/zerolog"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	fn "github.com/mrsimonemms/openfaas-templates/template/golang-crud/function"
@@ -23,8 +25,18 @@ func main() {
 		panic(err)
 	}
 
+	// Set log level
+	zerolog.SetGlobalLevel(cfg.Logger.Level)
+
 	r := gin.New()
-	r.Use(requestid.New(), gin.Logger(), gin.Recovery())
+	r.Use(
+		requestid.New(requestid.WithCustomHeaderStrKey(cfg.Logger.RequestIDHeader)),
+		logger.New(),
+		gin.Recovery(),
+		func(ctx *gin.Context) {
+			logger.Get(ctx).Debug().Str("path", ctx.Request.URL.Path).Msg("New HTTP call")
+		},
+	)
 
 	crud.RegisterRoutes(r, cfg)
 

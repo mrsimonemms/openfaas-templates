@@ -1,12 +1,22 @@
 package config
 
-import "github.com/caarlos0/env/v6"
+import (
+	"github.com/caarlos0/env/v6"
+	"github.com/gin-contrib/requestid"
+	"github.com/rs/zerolog"
+)
 
 type Config struct {
+	Logger
 	MongoDB
 	Pagination
 	Routes
 	Server
+}
+
+type Logger struct {
+	Level           zerolog.Level          `env:"LOGGER_LEVEL,required,notEmpty" envDefault:"info"`
+	RequestIDHeader requestid.HeaderStrKey `env:"LOGGER_REQUEST_ID_HEADER,required,notEmpty" envDefault:"x-correlation-id"`
 }
 
 type MongoDB struct {

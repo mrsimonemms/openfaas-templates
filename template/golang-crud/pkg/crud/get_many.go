@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kamva/mgm/v3"
+	logger "github.com/mrsimonemms/gin-structured-logger"
 	"github.com/mrsimonemms/openfaas-templates/template/golang-crud/pkg/common"
 	"github.com/mrsimonemms/openfaas-templates/template/golang-crud/pkg/function"
 	"go.mongodb.org/mongo-driver/bson"
@@ -15,6 +16,10 @@ import (
 )
 
 func (h handler) GetMany(c *gin.Context) {
+	log := logger.Get(c).With().Str("action", "getMany").Logger()
+
+	log.Debug().Msg("Getting multiple records")
+
 	page, err := strconv.Atoi(c.Query("page"))
 	if err != nil {
 		// Invalid input - use default value
@@ -43,6 +48,8 @@ func (h handler) GetMany(c *gin.Context) {
 		case "DESC":
 			dirValue = -1
 		default:
+			log.Debug().Err(err).Str("direction", direction).Msg("Invalid sort direction received")
+
 			common.ErrorHandler(c, http.StatusBadRequest, gin.H{
 				"message": "Invalid direction: " + direction + ". Use ASC or DESC",
 			})
@@ -63,6 +70,8 @@ func (h handler) GetMany(c *gin.Context) {
 	// Get total number of pages
 	count, err := coll.CountDocuments(ctx, filter)
 	if err != nil {
+		log.Error().Err(err).Msg("Failed to count documents in database")
+
 		common.ErrorHandler(c, http.StatusServiceUnavailable, gin.H{
 			"message": err.Error(),
 		})
@@ -79,6 +88,8 @@ func (h handler) GetMany(c *gin.Context) {
 
 	cursor, err := coll.Find(ctx, filter, opts)
 	if err != nil {
+		log.Error().Err(err).Msg("Failed to find documents in database")
+
 		common.ErrorHandler(c, http.StatusServiceUnavailable, gin.H{
 			"message": err.Error(),
 		})
@@ -87,14 +98,25 @@ func (h handler) GetMany(c *gin.Context) {
 
 	results := make([]function.Schema, 0)
 	if err := cursor.All(ctx, &results); err != nil {
+		log.Error().Err(err).Msg("Failed to retrieve documents from database")
+
 		common.ErrorHandler(c, http.StatusServiceUnavailable, gin.H{
 			"message": err.Error(),
 		})
 		return
 	}
 
+	countResult := len(results)
+
+	log.Debug().
+		Int("count", countResult).
+		Int("page", page).
+		Float64("totalPages", totalPages).
+		Int64("totalResults", count).
+		Msg("Retrieved records")
+
 	c.JSON(http.StatusOK, common.Paginate{
-		Count:        len(results),
+		Count:        countResult,
 		Page:         page,
 		TotalPages:   int(totalPages),
 		TotalResults: int(count),
