@@ -11,6 +11,7 @@ import (
 	logger "github.com/mrsimonemms/gin-structured-logger"
 	"github.com/mrsimonemms/openfaas-templates/template/golang-crud/pkg/common"
 	"github.com/mrsimonemms/openfaas-templates/template/golang-crud/pkg/function"
+	querybuilder "github.com/mrsimonemms/openfaas-templates/template/golang-crud/pkg/queryBuilder"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -65,7 +66,16 @@ func (h handler) GetMany(c *gin.Context) {
 	ctx := mgm.Ctx()
 	data := function.Schema{}
 	coll := mgm.Coll(&data)
-	filter := bson.D{}
+
+	filter, err := querybuilder.New(c.QueryArray("filter"), c.QueryArray("or"))
+	if err != nil {
+		log.Debug().Err(err).Msg("Query builder error")
+
+		common.ErrorHandler(c, http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
 
 	// Get total number of pages
 	count, err := coll.CountDocuments(ctx, filter)
