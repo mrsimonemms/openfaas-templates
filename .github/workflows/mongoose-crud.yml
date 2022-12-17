@@ -1,0 +1,48 @@
+name: Mongoose CRUD
+on:
+  pull_request:
+    paths:
+      - templates/mongoose-crud/**
+      - .github/workflows/mongoose-crud.yml
+  push:
+    paths:
+      - templates/mongoose-crud/**
+      - .github/workflows/mongoose-crud.yml
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        version:
+          - 3.6
+          - 4
+          - 5
+          - 6
+          - latest
+    services:
+      mongo:
+        image: mongo:${{ matrix.version }}
+        ports:
+          - 27017:27017
+    env:
+      APP_URL: http://localhost:3000
+      LOGGER_LEVEL: silent
+      MONGODB_URL: mongodb://localhost:27017/crud
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: "Install dependencies: ${{ matrix.version }}"
+        working-directory: template/mongoose-crud
+        run: |
+          npm ci
+          cd function
+          npm ci
+
+      - name: "Start application: ${{ matrix.version }}"
+        working-directory: template/mongoose-crud
+        run: npm run start:dev &
+
+      - name: "Run e2e tests: ${{ matrix.version }}"
+        working-directory: template/mongoose-crud
+        run: npm run test:e2e
