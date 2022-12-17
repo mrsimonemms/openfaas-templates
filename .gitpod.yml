@@ -2,7 +2,7 @@ tasks:
   - before: |
       curl -sfL gpm.simonemms.com | bash
 
-      gpm install pre-commit
+      gpm install faas-cli pre-commit
 
       pre-commit install --install-hooks
 
