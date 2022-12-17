@@ -1,0 +1,64 @@
+{
+  "name": "mongoose-crud",
+  "version": "1.2.0",
+  "description": "Node CRUD OpenFaaS template using Mongoose",
+  "private": true,
+  "main": "./src/app.js",
+  "scripts": {
+    "format": "prettier --write './**/*.js'",
+    "lint": "eslint ./",
+    "start": "node ./",
+    "start:dev": "nodemon ./ | pino-pretty -tlc",
+    "test:e2e": "jest --config ./test/jest-e2e.json --forceExit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/MrSimonEmms/openfaas-templates.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/MrSimonEmms/openfaas-templates/issues"
+  },
+  "homepage": "https://gitlab.com/MrSimonEmms/openfaas-templates#readme",
+  "keywords": [
+    "openfaas",
+    "serverless",
+    "functions"
+  ],
+  "author": "Simon Emms <simon@simonemms.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@nestjsx/crud-request": "^5.0.0-alpha.3",
+    "fastify": "^3.25.2",
+    "fastify-metrics": "^8.0.0",
+    "fastify-sensible": "^3.1.2",
+    "mongoose": "^6.1.4",
+    "mongoose-paginate-v2": "^1.4.2",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jest": "^24.7.0",
+    "eslint-plugin-prettier": "^3.4.1",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.15",
+    "pino-pretty": "^4.8.0",
+    "prettier": "^2.5.1",
+    "supertest": "^6.1.6"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.js$",
+    "collectCoverageFrom": [
+      "**/*.js"
+    ],
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node"
+  }
+}
