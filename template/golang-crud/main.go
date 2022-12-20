@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/gin-contrib/requestid"
 	"github.com/gin-gonic/gin"
@@ -37,6 +38,16 @@ func main() {
 			logger.Get(ctx).Debug().Str("path", ctx.Request.URL.Path).Msg("New HTTP call")
 		},
 	)
+	r.NoRoute(func(ctx *gin.Context) {
+		statusCode := http.StatusNotFound
+		message := fmt.Sprintf("Route %s:%s not found", ctx.Request.Method, ctx.Request.URL)
+
+		ctx.JSON(statusCode, map[string]interface{}{
+			"message":    message,
+			"error":      http.StatusText(statusCode),
+			"statusCode": statusCode,
+		})
+	})
 
 	crud.RegisterRoutes(r, cfg)
 
