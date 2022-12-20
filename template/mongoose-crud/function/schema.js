@@ -1,3 +1,14 @@
+/**
+ * Schema
+ *
+ * Return a Mongoose schema to define our model. This will where the majority of
+ * the work will be done.
+ *
+ * @link https://mongoosejs.com/docs/guide.html
+ * @param {*} param0
+ * @param {*} BaseSchema
+ * @returns {schema}
+ */
 module.exports = ({ model }, BaseSchema) => {
   const modelName = 'User';
 
