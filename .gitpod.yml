@@ -40,3 +40,4 @@ vscode:
     - donjayamanne.git-extension-pack
     - EditorConfig.EditorConfig
     - ms-vscode.vscode-typescript-next
+    - mongodb.mongodb-vscode
