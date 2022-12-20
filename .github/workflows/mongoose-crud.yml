@@ -47,6 +47,11 @@ jobs:
           cd function
           npm ci
 
+      - name: Lint
+        working-directory: template/mongoose-crud
+        run: |
+          npm run lint
+
       - name: Start application
         working-directory: template/mongoose-crud
         run: npm run start:dev &
