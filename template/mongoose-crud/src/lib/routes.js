@@ -44,7 +44,7 @@ module.exports = class Routes {
         if (err.code === 'ERR_MODULE_NOT_FOUND') {
           app.log.trace({ err }, 'No middleware loaded');
         } else {
-          app.log.error({err}, 'Error loading middleware');
+          app.log.error({ err }, 'Error loading middleware');
           throw err;
         }
       }
