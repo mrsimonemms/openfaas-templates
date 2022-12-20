@@ -1,12 +1,42 @@
+image: gitpod/workspace-mongodb
+
+ports:
+  - name: MongoDB
+    port: 27017
+    onOpen: notify
+
+  - name: Mongoose CRUD
+    port: 3000
+    onOpen: notify
+
 tasks:
-  - before: |
+  - name: MongoDB
+    command: mongod
+
+  - name: Setup
+    before: |
       curl -sfL gpm.simonemms.com | bash
 
       gpm install faas-cli pre-commit
 
       pre-commit install --install-hooks
 
+      exit 0
+
+  - name: Mongoose CRUD
+    env:
+      APP_URL: http://localhost:3000
+      http_port: "3000"
+      MONGODB_URL: mongodb://localhost:27017/mongoose-crud
+    init: |
+      cd ${GITPOD_REPO_ROOT}/template/mongoose-crud
+      npm ci
+    command: |
+      cd ${GITPOD_REPO_ROOT}/template/mongoose-crud
+      npm run start:dev
+
 vscode:
   extensions:
     - donjayamanne.git-extension-pack
     - EditorConfig.EditorConfig
+    - ms-vscode.vscode-typescript-next
