@@ -15,3 +15,12 @@ repos:
     rev: v1.1.1
     hooks:
       - id: markdown-toc
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: 'v8.30.0'
+    hooks:
+      - id: eslint
+        files: \.[jt]sx?$ # *.js, *.jsx, *.ts and *.tsx
+        types: [file]
+        args:
+          - --config=template/mongoose-crud/.eslintrc.json
+          - --fix
