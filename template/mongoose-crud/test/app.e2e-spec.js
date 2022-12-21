@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const pino = require('pino');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const supertest = require('supertest');
 
 const mongoose = require('../src/lib/mongoose');
