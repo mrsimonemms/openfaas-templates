@@ -1,7 +1,7 @@
 /**
  * Controller
  *
- * Used to controll the endpoints
+ * Used to control the endpoints
  *
  * @param {*} BaseController
  * @returns
