@@ -63,3 +63,4 @@ vscode:
     - golang.go
     - mongodb.mongodb-vscode
     - rangav.vscode-thunder-client
+    - bungcip.better-toml
