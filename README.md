@@ -14,6 +14,7 @@ Templates for [OpenFaaS](https://www.openfaas.com)
 ## Available Templates
 
  - [mongoose-crud](./template/mongoose-crud)
+ - [golang-crud](./template/golang-crud)
 
 ## Creating a function
 
