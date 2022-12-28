@@ -15,12 +15,16 @@ repos:
     rev: v1.1.1
     hooks:
       - id: markdown-toc
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: 'v8.30.0'
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v1.50.1
     hooks:
-      - id: eslint
-        files: \.[jt]sx?$ # *.js, *.jsx, *.ts and *.tsx
-        types: [file]
-        args:
-          - --config=template/mongoose-crud/.eslintrc.json
-          - --fix
+      - id: golangci-lint
+        entry: golangci-lint run --fix ./template/golang-crud
+  - repo: https://github.com/Bahjat/pre-commit-golang
+    rev: v1.0.3
+    hooks:
+      - id: go-fmt-import
+      - id: go-vet
+      - id: gofumpt
+      - id: go-err-check
+      - id: go-static-check

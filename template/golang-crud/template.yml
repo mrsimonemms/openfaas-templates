@@ -1,0 +1,6 @@
+language: golang-crud
+fprocess: ./handler
+welcome_message: |
+  Well done, you have created a new golang-crud function.
+
+  Simon Emms <https://simonemms.com>
